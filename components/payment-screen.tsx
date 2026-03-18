@@ -50,23 +50,6 @@ interface PaymentScreenProps {
     onPlaceAnotherOrder: () => void;
 }
 
-const handleWhatsAppClick = () => {
-    // WhatsApp requires the number with country code, but WITHOUT the '+' or spaces
-    const phoneNumber = "2348128572911";
-
-    // The message we want to pre-fill for the user
-    const message = `Hello! I just made a payment for my SIM card order.\n\n*Order Number:* ${orderId}\n*Total Amount:* ₦${totalAmount.toLocaleString()}\n\nHere is my payment receipt:`;
-
-    // Encode the message so it works safely in a URL
-    const encodedMessage = encodeURIComponent(message);
-
-    // Build the final WhatsApp URL
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-    // Open in a new tab (which triggers the app to open on mobile)
-    window.open(whatsappUrl, '_blank');
-};
-
 export default function PaymentScreen({ orderId, totalAmount, onClose, onPlaceAnotherOrder }: PaymentScreenProps) {
     const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -75,6 +58,24 @@ export default function PaymentScreen({ orderId, totalAmount, onClose, onPlaceAn
         navigator.clipboard.writeText(text);
         setCopiedField(fieldId);
         setTimeout(() => setCopiedField(null), 2000);
+    };
+
+    // MOVED INSIDE the component so it has access to orderId and totalAmount
+    const handleWhatsAppClick = () => {
+        // WhatsApp requires the number with country code, but WITHOUT the '+' or spaces
+        const phoneNumber = "2348128572911";
+
+        // The message we want to pre-fill for the user
+        const message = `Hello! I just made a payment for my SIM card order.\n\n*Order Number:* ${orderId}\n*Total Amount:* ₦${totalAmount.toLocaleString()}\n\nHere is my payment receipt:`;
+
+        // Encode the message so it works safely in a URL
+        const encodedMessage = encodeURIComponent(message);
+
+        // Build the final WhatsApp URL
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        // Open in a new tab (which triggers the app to open on mobile)
+        window.open(whatsappUrl, '_blank');
     };
 
     return (

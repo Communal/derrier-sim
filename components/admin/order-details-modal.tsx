@@ -11,6 +11,70 @@ interface OrderDetailsModalProps {
     onStatusChange: (id: string, status: OrderStatus) => void;
 }
 
+// --- Moved OUTSIDE to prevent recreating during render ---
+interface AdminCopyFieldProps {
+    label: string;
+    value: string;
+    fieldId: string;
+    isTextArea?: boolean;
+    copiedField: string | null;
+    onCopy: (text: string, fieldId: string) => void;
+}
+
+const AdminCopyField = ({ label, value, fieldId, isTextArea = false, copiedField, onCopy }: AdminCopyFieldProps) => (
+    <div className="space-y-2">
+        <label className="text-xs font-semibold tracking-wider text-neutral-400 uppercase">
+            {label}
+        </label>
+        <div className="flex items-start gap-3">
+            <div className={cn(
+                "flex-1 p-4 rounded-xl border border-[#FFFFFF1A] bg-[#1A1A1A] font-body text-sm text-neutral-200 uppercase",
+                isTextArea ? "min-h-25" : "h-14 flex items-center" // Fixed canonical class error here
+            )}>
+                {value}
+            </div>
+            <button
+                onClick={() => onCopy(value, fieldId)}
+                className="h-14 w-14 shrink-0 rounded-xl border border-[#FFFFFF1A] bg-[#1A1A1A] flex items-center justify-center text-neutral-400 hover:text-white hover:bg-[#FFFFFF2A] transition-colors"
+            >
+                {copiedField === fieldId ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+            </button>
+        </div>
+    </div>
+);
+
+// --- Moved OUTSIDE to prevent recreating during render ---
+interface StatusButtonProps {
+    status: OrderStatus;
+    icon: React.ElementType; // Fixed the 'any' type error here
+    label: string;
+    currentStatus: OrderStatus;
+    orderId: string;
+    onStatusChange: (id: string, status: OrderStatus) => void;
+}
+
+const StatusButton = ({ status, icon: Icon, label, currentStatus, orderId, onStatusChange }: StatusButtonProps) => {
+    const isActive = currentStatus === status;
+    const colorClass = status === 'PENDING' ? 'amber' : status === 'ACTIVE' ? 'cyan' : 'green';
+
+    return (
+        <button
+            onClick={() => onStatusChange(orderId, status)}
+            className={cn(
+                "flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border text-sm font-medium transition-all",
+                isActive
+                    ? `bg-${colorClass}-500/10 border-${colorClass}-500 text-${colorClass}-500`
+                    : "bg-[#1A1A1A] border-[#FFFFFF1A] text-neutral-400 hover:text-white"
+            )}
+        >
+            <Icon className="w-4 h-4" />
+            {label}
+        </button>
+    );
+};
+
+
+// --- Main Component ---
 export default function OrderDetailsModal({ order, onClose, onStatusChange }: OrderDetailsModalProps) {
     const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -18,48 +82,6 @@ export default function OrderDetailsModal({ order, onClose, onStatusChange }: Or
         navigator.clipboard.writeText(text);
         setCopiedField(fieldId);
         setTimeout(() => setCopiedField(null), 2000);
-    };
-
-    const AdminCopyField = ({ label, value, fieldId, isTextArea = false }: { label: string, value: string, fieldId: string, isTextArea?: boolean }) => (
-        <div className="space-y-2">
-            <label className="text-xs font-semibold tracking-wider text-neutral-400 uppercase">
-                {label}
-            </label>
-            <div className="flex items-start gap-3">
-                <div className={cn(
-                    "flex-1 p-4 rounded-xl border border-[#FFFFFF1A] bg-[#1A1A1A] font-body text-sm text-neutral-200 uppercase",
-                    isTextArea ? "min-h-[100px]" : "h-14 flex items-center"
-                )}>
-                    {value}
-                </div>
-                <button
-                    onClick={() => handleCopy(value, fieldId)}
-                    className="h-14 w-14 shrink-0 rounded-xl border border-[#FFFFFF1A] bg-[#1A1A1A] flex items-center justify-center text-neutral-400 hover:text-white hover:bg-[#FFFFFF2A] transition-colors"
-                >
-                    {copiedField === fieldId ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
-                </button>
-            </div>
-        </div>
-    );
-
-    const StatusButton = ({ status, icon: Icon, label }: { status: OrderStatus, icon: any, label: string }) => {
-        const isActive = order.status === status;
-        const colorClass = status === 'PENDING' ? 'amber' : status === 'ACTIVE' ? 'cyan' : 'green';
-
-        return (
-            <button
-                onClick={() => onStatusChange(order.id, status)}
-                className={cn(
-                    "flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border text-sm font-medium transition-all",
-                    isActive
-                        ? `bg-${colorClass}-500/10 border-${colorClass}-500 text-${colorClass}-500`
-                        : "bg-[#1A1A1A] border-[#FFFFFF1A] text-neutral-400 hover:text-white"
-                )}
-            >
-                <Icon className="w-4 h-4" />
-                {label}
-            </button>
-        );
     };
 
     return (
@@ -86,9 +108,9 @@ export default function OrderDetailsModal({ order, onClose, onStatusChange }: Or
                     <div className="space-y-3">
                         <h3 className="text-xs font-semibold tracking-wider text-neutral-400 uppercase">Change Order Status</h3>
                         <div className="flex flex-col gap-3">
-                            <StatusButton status="PENDING" icon={Clock} label="Pending" />
-                            <StatusButton status="ACTIVE" icon={Package} label="Active" />
-                            <StatusButton status="CONCLUDED" icon={CheckCircle2} label="Concluded" />
+                            <StatusButton status="PENDING" icon={Clock} label="Pending" currentStatus={order.status} orderId={order.id} onStatusChange={onStatusChange} />
+                            <StatusButton status="ACTIVE" icon={Package} label="Active" currentStatus={order.status} orderId={order.id} onStatusChange={onStatusChange} />
+                            <StatusButton status="CONCLUDED" icon={CheckCircle2} label="Concluded" currentStatus={order.status} orderId={order.id} onStatusChange={onStatusChange} />
                         </div>
                     </div>
 
@@ -106,13 +128,13 @@ export default function OrderDetailsModal({ order, onClose, onStatusChange }: Or
 
                     {/* Copyable Fields */}
                     <div className="space-y-6">
-                        <AdminCopyField label="Customer Name" value={order.customerName} fieldId="name" />
-                        <AdminCopyField label="E-Mail" value={order.email} fieldId="email" />
-                        <AdminCopyField label="Phone Number" value={order.phone} fieldId="phone" />
-                        <AdminCopyField label="Whatsapp Number" value={order.whatsapp} fieldId="wa" />
-                        <AdminCopyField label="Shipping Address" value={order.shippingAddress} fieldId="address" isTextArea={true} />
-                        <AdminCopyField label="State" value={order.state} fieldId="state" />
-                        <AdminCopyField label="LGA" value={order.lga} fieldId="lga" />
+                        <AdminCopyField label="Customer Name" value={order.customerName} fieldId="name" copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="E-Mail" value={order.email} fieldId="email" copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="Phone Number" value={order.phone} fieldId="phone" copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="Whatsapp Number" value={order.whatsapp} fieldId="wa" copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="Shipping Address" value={order.shippingAddress} fieldId="address" isTextArea={true} copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="State" value={order.state} fieldId="state" copiedField={copiedField} onCopy={handleCopy} />
+                        <AdminCopyField label="LGA" value={order.lga} fieldId="lga" copiedField={copiedField} onCopy={handleCopy} />
                     </div>
 
                     {/* Timeline Card */}
@@ -125,7 +147,7 @@ export default function OrderDetailsModal({ order, onClose, onStatusChange }: Or
                             </div>
                             <div>
                                 <p className="text-neutral-500">Last Updated</p>
-                                <p className="text-neutral-200">{order.lastUpdated}</p>
+                                <p className="text-neutral-200">{order.updatedAt}</p>
                             </div>
                         </div>
                     </div>
