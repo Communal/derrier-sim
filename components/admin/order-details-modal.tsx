@@ -70,7 +70,7 @@ const StatusButton = ({ status, icon: Icon, label, currentStatus, orderId, onSta
                 // 2. Swapped h-16 for explicit padding: py-5 (top/bottom) and px-8 (left/right)
                 "w-full flex items-center justify-center gap-3 py-5 px-8 rounded-2xl border-2 text-base font-semibold transition-all",
                 isActive
-                    ? activeStyles[status]
+                    ? activeStyles[status as keyof typeof activeStyles]
                     : "border-transparent bg-transparent text-neutral-500 hover:text-neutral-300 hover:bg-[#FFFFFF0A]"
             )}
         >
