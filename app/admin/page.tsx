@@ -35,7 +35,7 @@ export default function AdminDashboard() {
 
                 {/* --- Filters Header --- */}
                 <div className="flex flex-wrap gap-3">
-                    {(['ALL', 'PENDING', 'ACTIVE', 'CONCLUDED'] as const).map((filter) => (
+                    {(['PENDING', 'ACTIVE', 'CONCLUDED', 'ALL'] as const).map((filter) => (
                         <button
                             key={filter}
                             onClick={() => setActiveFilter(filter)}

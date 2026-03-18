@@ -6,6 +6,16 @@ import SIMPurchaseCard from "@/components/sim-purchase-card";
 import PaymentScreen from "@/components/payment-screen";
 import { simCardOptions } from "@/data/sim-content";
 import RecentPurchases from "@/components/recent-purchases";
+import ImageGrid from '@/components/image-grid';
+
+const myGalleryImages = [
+  { id: 1, src: '/images/1.png', alt: 'User activating T-Mobile SIM', caption: 'Fast Activation' },
+  { id: 2, src: '/images/2.png', alt: 'AT&T Bulk order packaging', caption: 'Bulk Orders Ready' },
+  { id: 3, src: '/images/3.png', alt: 'Sim cards on a sleek dark surface', caption: 'Premium Carriers' },
+  { id: 4, src: '/images/4.png', alt: 'Delivery man handling package', caption: 'Express Shipping' },
+  { id: 5, src: '/images/5.png', alt: 'Customer support agent smiling', caption: '24/7 Support' },
+  { id: 6, src: '/images/6.png', alt: 'O2 UK sim card packaging', caption: 'International Options' },
+];
 
 export default function Home() {
   // State to hold the successful order details. Null means no order placed yet.
@@ -66,7 +76,12 @@ export default function Home() {
               Secure checkout • Fast shipping • 24/7 support
             </p>
           </footer>
+          <ImageGrid
+            images={myGalleryImages}
+          />
         </div>
+
+
 
       )}
     </main>

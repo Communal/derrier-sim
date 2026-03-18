@@ -34,7 +34,7 @@ interface Counts {
 export const useAdminOrders = () => {
     const [orders, setOrders] = useState<AdminOrder[]>([]);
     const [counts, setCounts] = useState<Counts>({ ALL: 0, PENDING: 0, ACTIVE: 0, CONCLUDED: 0 });
-    const [activeFilter, setActiveFilter] = useState<OrderStatus>('ALL');
+const [activeFilter, setActiveFilter] = useState<OrderStatus | 'ALL'>('PENDING');
 
     // Pagination & Loading State
     const [page, setPage] = useState(1);
