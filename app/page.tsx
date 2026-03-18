@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import SIMPurchaseCard from "@/components/sim-purchase-card";
 import PaymentScreen from "@/components/payment-screen";
 import { simCardOptions } from "@/data/sim-content";
+import RecentPurchases from "@/components/recent-purchases";
 
 export default function Home() {
   // State to hold the successful order details. Null means no order placed yet.
@@ -45,18 +46,18 @@ export default function Home() {
         // --- DEFAULT SHOPPING VIEW ---
         <div className="animate-in fade-in duration-500">
           <Hero />
+          <RecentPurchases />
 
           {/* Multiple Forms: One for each SIM provider */}
-          <section className="container mx-auto px-4 pb-32 space-y-24 mt-12">
-            {simCardOptions.map((sim) => (
-              <div key={sim.id} className="scroll-mt-20" id={sim.id}>
-                {/* Notice we pass the handleOrderSuccess function down here */}
-                <SIMPurchaseCard
-                  data={sim}
-                  onSuccess={handleOrderSuccess}
-                />
-              </div>
-            ))}
+          <section id="sim-options" className="container mx-auto px-4 pb-32 space-y-24 mt-12 scroll-mt-24">            {simCardOptions.map((sim) => (
+            <div key={sim.id} className="scroll-mt-20" id={sim.id}>
+              {/* Notice we pass the handleOrderSuccess function down here */}
+              <SIMPurchaseCard
+                data={sim}
+                onSuccess={handleOrderSuccess}
+              />
+            </div>
+          ))}
           </section>
 
           {/* Footer Branding */}

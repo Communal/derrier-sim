@@ -55,19 +55,26 @@ interface StatusButtonProps {
 
 const StatusButton = ({ status, icon: Icon, label, currentStatus, orderId, onStatusChange }: StatusButtonProps) => {
     const isActive = currentStatus === status;
-    const colorClass = status === 'PENDING' ? 'amber' : status === 'ACTIVE' ? 'cyan' : 'green';
+
+    const activeStyles = {
+        PENDING: "bg-amber-500/10 border-amber-500 text-amber-500",
+        ACTIVE: "bg-cyan-500/10 border-cyan-500 text-cyan-500",
+        CONCLUDED: "bg-green-500/10 border-green-500 text-green-500",
+    };
 
     return (
         <button
             onClick={() => onStatusChange(orderId, status)}
             className={cn(
-                "flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border text-sm font-medium transition-all",
+                // 1. Swapped flex-1 for w-full (better for stacked columns)
+                // 2. Swapped h-16 for explicit padding: py-5 (top/bottom) and px-8 (left/right)
+                "w-full flex items-center justify-center gap-3 py-5 px-8 rounded-2xl border-2 text-base font-semibold transition-all",
                 isActive
-                    ? `bg-${colorClass}-500/10 border-${colorClass}-500 text-${colorClass}-500`
-                    : "bg-[#1A1A1A] border-[#FFFFFF1A] text-neutral-400 hover:text-white"
+                    ? activeStyles[status]
+                    : "border-transparent bg-transparent text-neutral-500 hover:text-neutral-300 hover:bg-[#FFFFFF0A]"
             )}
         >
-            <Icon className="w-4 h-4" />
+            <Icon className="w-5 h-5" />
             {label}
         </button>
     );

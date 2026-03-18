@@ -7,15 +7,15 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SIMPurchaseFormValues, useSIMPurchaseForm } from '@/hooks/use-sim-purchase-form';
 import { SIMData } from '@/types/sim-purchase';
 import { cn } from "@/lib/utils";
-import { Globe, ChevronDown, User, Mail, Phone, MessageCircle, Package } from "lucide-react";
+import { Globe, ChevronDown, User, Mail, Phone, MessageCircle, Package, MapPin, Map } from "lucide-react";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import ProviderFlag from '@/components/provider-flag';
 
 // --- Form Input Sub-Component ---
 interface FormInputProps {
@@ -35,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = ({ form, name, placeholder, type = '
                 <FormControl>
                     <div className="relative flex items-center">
                         {icon && (
-                            <div className="absolute left-4 text-neutral-500">
+                            <div className="absolute left-4 text-neutral-500 flex items-center justify-center pointer-events-none">
                                 {icon}
                             </div>
                         )}
@@ -75,7 +75,7 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
 
                     {/* Header Section */}
                     <CardHeader className="text-left space-y-4 p-0 md:p-6">
-                        <CardTitle className="font-heading text-3xl md:text-4xl font-light text-white">
+                        <CardTitle className="font-heading text-3xl md:text-4xl font-light text-white flex items-center gap-3">
                             Get Your {title}
                         </CardTitle>
                         <CardDescription className="text-sm md:text-base font-body text-neutral-400 max-w-2xl leading-relaxed">
@@ -94,6 +94,7 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                                     <div className="flex items-center gap-3 text-white">
                                         <Globe className="w-5 h-5 text-neutral-400" />
                                         <span className="font-medium font-body text-[16px]">{provider}</span>
+                                        <ProviderFlag provider={data.provider} className="w-5 h-5" />
                                     </div>
                                     <ChevronDown className="w-5 h-5 text-neutral-500" />
                                 </div>
@@ -104,7 +105,7 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                                 {data.plans.map((plan, index) => (
                                     <label
                                         key={index}
-                                        htmlFor={`${data.id}-plan-${index}`} // Unique ID
+                                        htmlFor={`${data.id}-plan-${index}`}
                                         className={cn(
                                             "relative flex flex-col justify-center p-5 rounded-2xl border-[0.8px] border-[#FFFFFF1A] transition-all cursor-pointer hover:bg-[#FFFFFF1A]",
                                             selectedPlanIndex === index ? "bg-[#FFFFFF1A]" : "bg-[#FFFFFF0D]"
@@ -115,7 +116,7 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                                             </span>
                                             <RadioGroupItem
                                                 value={String(index)}
-                                                id={`${data.id}-plan-${index}`} // Unique ID
+                                                id={`${data.id}-plan-${index}`}
                                                 className={cn(
                                                     "h-5 w-5 rounded-full",
                                                     selectedPlanIndex === index ? "border-white text-white" : "border-neutral-500"
@@ -144,46 +145,20 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                                 <FormInput form={form} name="whatsappNumber" placeholder="Whatsapp Number" icon={<MessageCircle className="w-5 h-5" />} />
                                 <FormInput form={form} name="shippingAddress" placeholder="Delivery Address" icon={<Package className="w-5 h-5" />} />
 
+                                {/* SIMPLIFIED: Both State and LGA are now standard text inputs */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <FormField
-                                        control={form.control}
+                                    <FormInput
+                                        form={form}
                                         name="state"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="bg-[#FFFFFF0D] border-[0.8px] border-[#FFFFFF1A] hover:bg-[#FFFFFF1A] focus:bg-[#FFFFFF1A] text-neutral-500 font-body text-[16px] h-14 rounded-xl px-4 focus:ring-1 focus:ring-white transition-colors">
-                                                            <SelectValue placeholder="State" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent className="bg-neutral-900 border-[#FFFFFF1A] text-white">
-                                                        <SelectItem value="Lagos">Lagos</SelectItem>
-                                                        <SelectItem value="Abuja">Abuja</SelectItem>
-                                                        <SelectItem value="Rivers">Rivers</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage className="text-red-500 text-xs ml-1" />
-                                            </FormItem>
-                                        )}
+                                        placeholder="State"
+                                        icon={<Map className="w-5 h-5" />}
                                     />
-                                    <FormField
-                                        control={form.control}
+
+                                    <FormInput
+                                        form={form}
                                         name="lga"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="bg-[#FFFFFF0D] border-[0.8px] border-[#FFFFFF1A] hover:bg-[#FFFFFF1A] focus:bg-[#FFFFFF1A] text-neutral-500 font-body text-[16px] h-14 rounded-xl px-4 focus:ring-1 focus:ring-white transition-colors">
-                                                            <SelectValue placeholder="LGA" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent className="bg-neutral-900 border-[#FFFFFF1A] text-white">
-                                                        <SelectItem value="Ikeja">Ikeja</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage className="text-red-500 text-xs ml-1" />
-                                            </FormItem>
-                                        )}
+                                        placeholder="LGA / City"
+                                        icon={<MapPin className="w-5 h-5" />}
                                     />
                                 </div>
                             </div>
@@ -194,7 +169,6 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                             <div className="bg-[#FFFFFF0D] p-6 rounded-2xl border-[0.8px] border-[#FFFFFF1A] space-y-4">
                                 <div className="space-y-3 font-body text-neutral-400">
                                     <div className="flex justify-between items-center text-sm">
-                                        {/* Dynamically reads the selected pieces */}
                                         <span>Subtotal ({selectedPlan.description} SIM Card)</span>
                                         <span className="text-white">₦{purchaseSummary.subtotal.toLocaleString()}</span>
                                     </div>
@@ -221,7 +195,7 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
                                 </Alert>
                             )}
 
-                            {/* Submit Button grouped closely with the summary */}
+                            {/* Submit Button */}
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}

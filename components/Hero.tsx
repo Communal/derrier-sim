@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from 'next/link';
 
 export default function Hero() {
     return (
@@ -17,10 +18,10 @@ export default function Hero() {
                 Purchase SIM cards instantly for single use or in bulk. Fast shipping within 24-36 hours, premium quality. Just instant connectivity.
             </p>
 
-            <button className="mt-10 group flex items-center gap-2 bg-neutral-100 hover:bg-white text-black px-10 py-5 rounded-3xl font-['Lexend'] font-bold text-lg transition-all">
+            <Link href="#sim-options" className="mt-10 group flex items-center gap-2 bg-neutral-100 hover:bg-white text-black px-10 py-5 rounded-3xl font-['Lexend'] font-bold text-lg transition-all">
                 Buy SIM Now
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </Link>
         </section>
     );
 }
