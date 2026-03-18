@@ -63,7 +63,7 @@ export default function AdminDashboard() {
                         </div>
                     ) : orders.length > 0 ? (
                         orders.map((order) => {
-                            const config = statusConfig[order.status];
+                            const config = statusConfig[order.status as keyof typeof statusConfig];
                             const StatusIcon = config.icon;
 
                             return (
