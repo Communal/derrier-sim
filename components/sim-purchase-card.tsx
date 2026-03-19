@@ -73,13 +73,19 @@ const SIMPurchaseCard: React.FC<SIMPurchaseCardProps> = ({ data, onSuccess }) =>
             <Form {...form}>
                 <form onSubmit={onSubmit} className="space-y-12">
 
-                    {/* Header Section */}
-                    <CardHeader className="text-left space-y-4 p-0 md:p-6">
+
+                    <CardHeader className="text-left space-y-2 p-0 md:p-6">
                         <CardTitle className="font-heading text-3xl md:text-4xl font-light text-white flex items-center gap-3">
                             Get Your {title}
                         </CardTitle>
-                        <CardDescription className="text-sm md:text-base font-body text-neutral-400 max-w-2xl leading-relaxed">
-                            {description}
+                        <CardDescription className="text-sm md:text-base font-body text-neutral-400 max-w-2xl leading-relaxed flex flex-col gap-2">
+                            {/* Splits the description by line breaks and renders each as a bullet */}
+                            {description.split('\n').filter(line => line.trim() !== '').map((line, index) => (
+                                <span key={index} className="flex gap-2 items-start">
+                                    <span className="text-neutral-600 mt-0.5">•</span>
+                                    <span>{line.trim()}</span>
+                                </span>
+                            ))}
                         </CardDescription>
                     </CardHeader>
 

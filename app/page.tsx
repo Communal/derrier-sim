@@ -9,12 +9,12 @@ import RecentPurchases from "@/components/recent-purchases";
 import ImageGrid from '@/components/image-grid';
 
 const myGalleryImages = [
-  { id: 1, src: '/images/1.png', alt: 'User activating T-Mobile SIM', caption: 'Fast Activation' },
-  { id: 2, src: '/images/2.png', alt: 'AT&T Bulk order packaging', caption: 'Bulk Orders Ready' },
-  { id: 3, src: '/images/3.png', alt: 'Sim cards on a sleek dark surface', caption: 'Premium Carriers' },
-  { id: 4, src: '/images/4.png', alt: 'Delivery man handling package', caption: 'Express Shipping' },
-  { id: 5, src: '/images/5.png', alt: 'Customer support agent smiling', caption: '24/7 Support' },
-  { id: 6, src: '/images/6.png', alt: 'O2 UK sim card packaging', caption: 'International Options' },
+  { id: 1, src: '/images/1.png', alt: 'User activating T-Mobile SIM', caption: '02 Sim' },
+  { id: 2, src: '/images/2.png', alt: 'AT&T Bulk order packaging', caption: 'T-Mobile Sim details' },
+  { id: 3, src: '/images/3.png', alt: 'Sim cards on a sleek dark surface', caption: 'T-Mobile Sim' },
+  { id: 4, src: '/images/4.png', alt: 'Delivery man handling package', caption: 'AT&T 5G Sims' },
+  { id: 5, src: '/images/5.png', alt: 'Customer support agent smiling', caption: 'AT&T Prepaid' },
+  { id: 6, src: '/images/6.png', alt: 'O2 UK sim card packaging', caption: 'O2 UK Sim Plans' },
 ];
 
 export default function Home() {

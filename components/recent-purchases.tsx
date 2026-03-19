@@ -3,14 +3,39 @@
 import React from 'react';
 import { Package, Star } from 'lucide-react';
 
-const recentOrders = [
-    { name: "Sarah J.", item: "1x T-MOBILE SIM", time: "2 mins ago" },
-    { name: "Michael C.", item: "5x AT&T Bulk", time: "15 mins ago" },
-    { name: "David W.", item: "10x O2 UK", time: "1 hour ago" },
-    { name: "Jessica T.", item: "1x T-MOBILE SIM", time: "2 hours ago" },
-    { name: "Ahmed R.", item: "20x Vodafone Bulk", time: "3 hours ago" },
-    { name: "Emily B.", item: "3x AT&T SIM", time: "5 hours ago" },
+// Your 3 distinct sets of testimonials
+const orderSets = [
+    // Set 1
+    [
+        { name: "Sarah J.", item: "1x T-MOBILE SIM", time: "2 mins ago" },
+        { name: "Michael C.", item: "5x AT&T Bulk", time: "15 mins ago" },
+        { name: "David W.", item: "10x O2 UK", time: "1 hour ago" },
+        { name: "Jessica T.", item: "1x T-MOBILE SIM", time: "2 hours ago" },
+        { name: "Ahmed R.", item: "20x T-MOBILE Bulk", time: "3 hours ago" },
+        { name: "Emily B.", item: "3x AT&T SIM", time: "5 hours ago" },
+    ],
+    // Set 2
+    [
+        { name: "Daniel K.", item: "1x O2 UK", time: "1 min ago" },
+        { name: "Sophia L.", item: "3x T-MOBILE SIM", time: "10 mins ago" },
+        { name: "James P.", item: "1x AT&T SIM", time: "45 mins ago" },
+        { name: "Olivia M.", item: "10x T-MOBILE Bulk", time: "1.5 hours ago" },
+        { name: "William T.", item: "5x O2 UK", time: "4 hours ago" },
+        { name: "Mia S.", item: "1x AT&T SIM", time: "6 hours ago" },
+    ],
+    // Set 3
+    [
+        { name: "Lucas H.", item: "3x AT&T SIM", time: "3 mins ago" },
+        { name: "Isabella V.", item: "1x T-MOBILE SIM", time: "20 mins ago" },
+        { name: "Ethan C.", item: "5x O2 UK", time: "1.2 hours ago" },
+        { name: "Ava N.", item: "20x AT&T Bulk", time: "2.5 hours ago" },
+        { name: "Mason D.", item: "1x O2 UK", time: "5 hours ago" },
+        { name: "Charlotte F.", item: "10x T-MOBILE Bulk", time: "7 hours ago" },
+    ]
 ];
+
+// This flattens the 3 arrays into one long array of 18 items!
+const allOrders = orderSets.flat();
 
 export default function RecentPurchases() {
     return (
@@ -30,8 +55,8 @@ export default function RecentPurchases() {
             {/* The Marquee Track */}
             <div className="flex w-fit animate-marquee hover:[animation-play-state:paused] cursor-default">
 
-                {/* We render the list TWICE back-to-back to create the seamless infinite loop effect */}
-                {[...recentOrders, ...recentOrders].map((order, index) => (
+                {/* We render ALL 18 items twice so it loops perfectly without gaps */}
+                {[...allOrders, ...allOrders].map((order, index) => (
                     <div
                         key={index}
                         className="flex items-center gap-4 bg-[#121212] border-[0.8px] border-[#FFFFFF1A] rounded-full px-5 py-2.5 mx-3 min-w-max"
