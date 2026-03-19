@@ -54,10 +54,10 @@ Can Get codes/verify apps and site without top ups
 Works on all mobile devices
 *You will need to top up £10 at www.o2.co.uk to activate for calls and normal text*`,
         plans: [
-            { id: "o2-1", description: "1pc", price: 110000 },
-            { id: "o2-2", description: "3pcs", price: 300000 },
-            { id: "o2-3", description: "5pcs", price: 480000 },
-            { id: "o2-4", description: "10pcs", price: 850000 },
+            { id: "o2-1", description: "1pc", price: 30000 },
+            { id: "o2-2", description: "5pcs", price: 125000 },
+            { id: "o2-3", description: "10pcs", price: 200000 },
+            { id: "o2-4", description: "50pcs", price: 750000 },
         ],
         shippingCost: 0,
     }
