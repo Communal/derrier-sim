@@ -55,34 +55,49 @@ export default function Home() {
 
         // --- DEFAULT SHOPPING VIEW ---
         <div className="animate-in fade-in duration-500">
+
+          {/* --- TOP PROMO BANNER --- */}
+          <div className="w-full bg-amber-500/10 border-b border-amber-500/20 py-2.5 overflow-hidden flex whitespace-nowrap relative z-50">
+            <div className="flex w-fit animate-marquee cursor-default">
+              {/* We repeat the text 12 times to ensure it completely fills the screen and loops seamlessly */}
+              {[...Array(12)].map((_, i) => (
+                <div key={i} className="flex items-center">
+                  <span className="mx-6 text-sm font-body font-semibold text-amber-500 tracking-wider uppercase">
+                    15% Discount + Free Delivery 🚚 + Payments on delivery
+                  </span>
+                  {/* Subtle dot separator between repeated phrases */}
+                  <span className="text-amber-500/30 text-xs">•</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <Hero />
           <RecentPurchases />
 
           {/* Multiple Forms: One for each SIM provider */}
-          <section id="sim-options" className="container mx-auto px-4 pb-32 space-y-24 mt-12 scroll-mt-24">            {simCardOptions.map((sim) => (
-            <div key={sim.id} className="scroll-mt-20" id={sim.id}>
-              {/* Notice we pass the handleOrderSuccess function down here */}
-              <SIMPurchaseCard
-                data={sim}
-                onSuccess={handleOrderSuccess}
-              />
-            </div>
-          ))}
+          <section id="sim-options" className="container mx-auto px-4 pb-32 space-y-24 mt-12 scroll-mt-24">
+            {simCardOptions.map((sim) => (
+              <div key={sim.id} className="scroll-mt-20" id={sim.id}>
+                {/* Notice we pass the handleOrderSuccess function down here */}
+                <SIMPurchaseCard
+                  data={sim}
+                  onSuccess={handleOrderSuccess}
+                />
+              </div>
+            ))}
           </section>
 
           {/* Footer Branding */}
+          <ImageGrid
+            images={myGalleryImages}
+          />
           <footer className="py-12 border-t border-[#FFFFFF1A] text-center">
             <p className="text-neutral-500 text-sm font-body tracking-widest uppercase">
               Secure checkout • Fast shipping • 24/7 support
             </p>
           </footer>
-          <ImageGrid
-            images={myGalleryImages}
-          />
         </div>
-
-
-
       )}
     </main>
   );
